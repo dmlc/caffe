@@ -1,6 +1,6 @@
 #ifndef CAFFE_UTIL_HDF5_H_
 #define CAFFE_UTIL_HDF5_H_
-
+#if !defined(CLOSE_HDF5)
 #include <string>
 
 #include "hdf5.h"
@@ -35,5 +35,5 @@ int hdf5_get_num_links(hid_t loc_id);
 string hdf5_get_name_by_idx(hid_t loc_id, int idx);
 
 }  // namespace caffe
-
+#endif
 #endif   // CAFFE_UTIL_HDF5_H_

@@ -114,11 +114,15 @@ class Net {
   void CopyTrainedLayersFrom(const NetParameter& param);
   void CopyTrainedLayersFrom(const string trained_filename);
   void CopyTrainedLayersFromBinaryProto(const string trained_filename);
+#if !defined(CLOSE_HDF5)
   void CopyTrainedLayersFromHDF5(const string trained_filename);
+#endif
   /// @brief Writes the net to a proto.
   void ToProto(NetParameter* param, bool write_diff = false) const;
+#if !defined(CLOSE_HDF5)
   /// @brief Writes the net to an HDF5 file.
   void ToHDF5(const string& filename, bool write_diff = false) const;
+#endif
 
   /// @brief returns the network name.
   inline const string& name() const { return name_; }

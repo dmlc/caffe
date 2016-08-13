@@ -99,12 +99,16 @@ class Solver {
   virtual void ApplyUpdate() = 0;
   string SnapshotFilename(const string extension);
   string SnapshotToBinaryProto();
+#if !defined(CLOSE_HDF5)
   string SnapshotToHDF5();
+#endif
   // The test routine
   void TestAll();
   void Test(const int test_net_id = 0);
   virtual void SnapshotSolverState(const string& model_filename) = 0;
+#if !defined(CLOSE_HDF5)
   virtual void RestoreSolverStateFromHDF5(const string& state_file) = 0;
+#endif
   virtual void RestoreSolverStateFromBinaryProto(const string& state_file) = 0;
   void DisplayOutputBlobs(const int net_id);
   void UpdateSmoothedLoss(Dtype loss, int start_iter, int average_loss);
