@@ -248,9 +248,11 @@ void SGDSolver<Dtype>::SnapshotSolverState(const string& model_filename) {
     case caffe::SolverParameter_SnapshotFormat_BINARYPROTO:
       SnapshotSolverStateToBinaryProto(model_filename);
       break;
+#if !defined(CLOSE_HDF5)
     case caffe::SolverParameter_SnapshotFormat_HDF5:
       SnapshotSolverStateToHDF5(model_filename);
       break;
+#endif
     default:
       LOG(FATAL) << "Unsupported snapshot format.";
   }
@@ -275,6 +277,7 @@ void SGDSolver<Dtype>::SnapshotSolverStateToBinaryProto(
   WriteProtoToBinaryFile(state, snapshot_filename.c_str());
 }
 
+#if !defined(CLOSE_HDF5)
 template <typename Dtype>
 void SGDSolver<Dtype>::SnapshotSolverStateToHDF5(
     const string& model_filename) {
@@ -300,7 +303,7 @@ void SGDSolver<Dtype>::SnapshotSolverStateToHDF5(
   H5Gclose(history_hid);
   H5Fclose(file_hid);
 }
-
+#endif
 template <typename Dtype>
 void SGDSolver<Dtype>::RestoreSolverStateFromBinaryProto(
     const string& state_file) {
@@ -320,7 +323,7 @@ void SGDSolver<Dtype>::RestoreSolverStateFromBinaryProto(
     history_[i]->FromProto(state.history(i));
   }
 }
-
+#if !defined(CLOSE_HDF5)
 template <typename Dtype>
 void SGDSolver<Dtype>::RestoreSolverStateFromHDF5(const string& state_file) {
   hid_t file_hid = H5Fopen(state_file.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
@@ -345,6 +348,7 @@ void SGDSolver<Dtype>::RestoreSolverStateFromHDF5(const string& state_file) {
   H5Gclose(history_hid);
   H5Fclose(file_hid);
 }
+#endif
 
 INSTANTIATE_CLASS(SGDSolver);
 REGISTER_SOLVER_CLASS(SGD);

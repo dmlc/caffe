@@ -33,8 +33,10 @@ class SGDSolver : public Solver<Dtype> {
   virtual void ClipGradients();
   virtual void SnapshotSolverState(const string& model_filename);
   virtual void SnapshotSolverStateToBinaryProto(const string& model_filename);
+#if !defined(CLOSE_HDF5)
   virtual void SnapshotSolverStateToHDF5(const string& model_filename);
   virtual void RestoreSolverStateFromHDF5(const string& state_file);
+#endif
   virtual void RestoreSolverStateFromBinaryProto(const string& state_file);
   // history maintains the historical momentum data.
   // update maintains update related data and is not needed in snapshots.
